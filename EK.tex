@@ -78,6 +78,8 @@
 \usepackage{graphicx} % Allows including images
 \usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
 
+\usepackage{algorithm,algpseudocode}
+
 %----------------------------------------------------------------------------------------
 %   TITLE PAGE
 %----------------------------------------------------------------------------------------
@@ -190,7 +192,7 @@ La funzione $f\uparrow f'$ è un flusso in $G$ avente valore $|f\uparrow f'|=|f|
 \frametitle{L'algoritmo di Ford-Fulkerson\\Cammino aumentante}
 Data una rete di flusso $G$ e un flusso $f$, un \textbf{cammino aumentante} è un cammino semplice che va da $s$ a $t$ nella rete residua $G_f$.\\
 Dato un cammino aumentante $p$, chiamiamo \textbf{capacità residua} di $p$ la massima quantità di flusso che è possibile mandare su questo cammino:\\
-$c_f(p)=min\{c_f(u,v):(u,v) \mbox{ sta in } p\}$\\
+$c_f(p)=min\{c_f(u,v):(u,v) \mbox{ sta in } p\}$.\\
 Definiamo inoltre una funzione $f_p:V\times V\rightarrow \mathbb{R}$ nel seguente modo:\\
 $$f_p(u,v) =
 \left\{
@@ -234,6 +236,29 @@ Dati $f$ flusso in una rete $G=(V,E)$ con $s$ sorgente e $t$ pozzo, le seguenti 
 \item $|f|=c(S,T)$ per qualche taglio $(S,T)$ di $G$
 \end{itemize}
 \end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{L'algoritmo di Ford-Fulkerson\\Pseudocodice}
+\begin{algorithm}[H]
+    \caption{Ford-Fulkerson(G,s,t)}%\label{euclid}
+    \begin{algorithmic}[1]
+        \State \textbf{for} each edge $(u,v)\in E$
+        \State \ \ \ \ \ \ $(u,v).f = 0$
+        \State \textbf{while} esiste un cammino aumentante $p$ in $G_f$
+        \State \ \ \ \ \ \ $c_f(p)=min\ \{c_f(u,v):(u,v)\mbox{ sta in }p\}$
+        \State \ \ \ \ \ \ \textbf{for} each edge $(u,v)$ in $p$
+        \State \ \ \ \ \ \ \ \ \ \ \ \ \textbf{if} $(u,v)\in E$
+        \State \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ $(u,v).f = (u,v).f + c_f(p)$
+        \State \ \ \ \ \ \ \ \ \ \ \ \ \textbf{else}
+        \State \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ $(v,u).f = (v,u).f - c_f(p)$
+    \end{algorithmic}
+    \label{alg_1}
+\end{algorithm}
+\end{frame}
+
+\begin{frame}
+osservazioni: complessità dell'algoritmo
 \end{frame}
 
 \section{L'algoritmo di Edmonds-Karp}
