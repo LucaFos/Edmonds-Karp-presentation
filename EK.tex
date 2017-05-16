@@ -155,6 +155,8 @@ Concetti:
 Per poi arrivare al \textbf{Teorema del flusso massimo e taglio minimo} (permette di dimostrare che l'algoritmo trova sempre il flusso massimo).
 \end{frame}
 
+\subsection{Rete residua}
+
 \begin{frame}
 \frametitle{L'algoritmo di Ford-Fulkerson\\Rete residua}
 Dati una rete $G$ e un flusso $f$, la rete residua $G_f$ rappresenta in che modo è possibile cambiare il flusso in $G$.\\
@@ -188,6 +190,8 @@ La funzione $f\uparrow f'$ è un flusso in $G$ avente valore $|f\uparrow f'|=|f|
 \end{block}
 \end{frame}
 
+\subsection{Cammino aumentante}
+
 \begin{frame}
 \frametitle{Il metodo di Ford-Fulkerson\\Cammino aumentante}
 Data una rete di flusso $G$ e un flusso $f$, un \textbf{cammino aumentante} è un cammino semplice che va da $s$ a $t$ nella rete residua $G_f$.\\
@@ -208,6 +212,8 @@ $f_p$ è un flusso in $G_f$ di valore $|f_p|=c_f(p)>0$.
 $f\uparrow f_p$ è un flusso in $G$ di valore $|f\uparrow f'|=|f|+|f_p|>|f|.$
 \end{block}
 \end{frame}
+
+\subsection{Taglio}
 
 \begin{frame}
 \frametitle{Il metodo di Ford-Fulkerson\\Taglio}
@@ -263,158 +269,29 @@ Una possibile implementazione del metodo consiste nello scegliere il cammino aum
 Per il caclolo della complessità, possiamo ridurci al caso in cui le capacità prendono valori interi.\\
 Il ciclo \textbf{for} alle linee 1-2 ha complessità $O(|E|)$.\\
 Se chiamiamo $f^*$ il flusso massimo, abbiamo che il ciclo \textbf{while} alla linea 3 verrà eseguito al più $|f^*|$ volte (ad ogni iterazione il valore del flusso aumenterà almeno di una unità). Trovare un cammino nella rete residua costa $O(|V|+|E|)=O(|E|)$ con BFS o DFS.\\
-La complessità dell'algoritmo è quindi $O(|E||f^*|)$. L'algoritmo è pseudopolinomiale.
+La complessità dell'algoritmo è quindi $O(|E|\cdot|f^*|)$. L'algoritmo è pseudopolinomiale.
 \end{frame}
 
 \section{L'algoritmo di Edmonds-Karp}
 
 \begin{frame}
 \frametitle{L'algoritmo di Edmonds-Karp}
-L'algoritmo di Edmonds-Karp è un'implementazione del metodo di Ford-Fulkerson che ci permette di risolvere il problema del massimo flusso in tempo $O(|V||E|^2)$. L'algoritmo utilizza una ricerca in ampiezza per trovare, ad ogni iterazione, il \textbf{cammino più breve} da $s$ a $t$ nella rete residua.
-\end{frame}
-
-\begin{frame}
-\end{frame}
-
-\begin{frame}
-\frametitle{Paragraphs of Text}
-Sed iaculis dapibus gravida. Morbi sed tortor erat, nec interdum arcu. Sed id lorem lectus. Quisque viverra augue id sem ornare non aliquam nibh tristique. Aenean in ligula nisl. Nulla sed tellus ipsum. Donec vestibulum ligula non lorem vulputate fermentum accumsan neque mollis.\\~\\
-
-Sed diam enim, sagittis nec condimentum sit amet, ullamcorper sit amet libero. Aliquam vel dui orci, a porta odio. Nullam id suscipit ipsum. Aenean lobortis commodo sem, ut commodo leo gravida vitae. Pellentesque vehicula ante iaculis arcu pretium rutrum eget sit amet purus. Integer ornare nulla quis neque ultrices lobortis. Vestibulum ultrices tincidunt libero, quis commodo erat ullamcorper id.
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}
-\frametitle{Bullet Points}
-\begin{itemize}
-\item Lorem ipsum dolor sit amet, consectetur adipiscing elit
-\item Aliquam blandit faucibus nisi, sit amet dapibus enim tempus eu
-\item Nulla commodo, erat quis gravida posuere, elit lacus lobortis est, quis porttitor odio mauris at libero
-\item Nam cursus est eget velit posuere pellentesque
-\item Vestibulum faucibus velit a augue condimentum quis convallis nulla gravida
-\end{itemize}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}
-\frametitle{Blocks of Highlighted Text}
-\begin{block}{Block 1}
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lectus nisl, ultricies in feugiat rutrum, porttitor sit amet augue. Aliquam ut tortor mauris. Sed volutpat ante purus, quis accumsan dolor.
-\end{block}
-
-\begin{block}{Block 2}
-Pellentesque sed tellus purus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vestibulum quis magna at risus dictum tempor eu vitae velit.
-\end{block}
-
-\begin{block}{Block 3}
-Suspendisse tincidunt sagittis gravida. Curabitur condimentum, enim sed venenatis rutrum, ipsum neque consectetur orci, sed blandit justo nisi ac lacus.
+L'algoritmo di Edmonds-Karp è un'implementazione del metodo di Ford-Fulkerson che ci permette di risolvere il problema del massimo flusso in tempo $O(|V|\cdot|E|^2)$. L'algoritmo utilizza una ricerca in ampiezza per trovare, ad ogni iterazione, il \textbf{cammino minimo} da $s$ a $t$ nella rete residua.
+\begin{block}{Lemma}
+Dato $G=(V,E)$ con $s$ sorgente e $t$ pozzo, per tutti i $v\in V\setminus\{s,t\}$ abbiamo che la lunghezza del cammino minimo fra $s$ e $v$ nella rete residua $G_f$ aumenta in maniera monotona durante l'esecuzione dell'algoritmo (in particolare, ad ogni aumento del flusso).
 \end{block}
 \end{frame}
 
-%------------------------------------------------
+\begin{frame}
+\frametitle{L'algoritmo di Edmonds-Karp}
+\begin{block}{Teorema}
+Data una rete di flusso $G=(V,E)$, l'algoritmo di Edmonds-Karp aumenta il valore del flusso $O(|V|\cdot|E|)$ volte.
+\end{block}
+Come visto precedentemente, possiamo individuare un cammino aumentante utilizzando BFS in tempo $O(|E|)$. La complessità dell'algoritmo è quindi $O(|V|\cdot|E|^2)$.
+\end{frame}
 
 \begin{frame}
-\frametitle{Multiple Columns}
-\begin{columns}[c] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
-
-\column{.45\textwidth} % Left column and width
-\textbf{Heading}
-\begin{enumerate}
-\item Statement
-\item Explanation
-\item Example
-\end{enumerate}
-
-\column{.5\textwidth} % Right column and width
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lectus nisl, ultricies in feugiat rutrum, porttitor sit amet augue. Aliquam ut tortor mauris. Sed volutpat ante purus, quis accumsan dolor.
-
-\end{columns}
+Algoritmi basati su ford-fulkerson di complessità minore (push relabel o dinic)
 \end{frame}
-
-%------------------------------------------------
-%\section{Second Section}
-%------------------------------------------------
-
-\begin{frame}
-\frametitle{Table}
-\begin{table}
-\begin{tabular}{l l l}
-\toprule
-\textbf{Treatments} & \textbf{Response 1} & \textbf{Response 2}\\
-\midrule
-Treatment 1 & 0.0003262 & 0.562 \\
-Treatment 2 & 0.0015681 & 0.910 \\
-Treatment 3 & 0.0009271 & 0.296 \\
-\bottomrule
-\end{tabular}
-\caption{Table caption}
-\end{table}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}
-\frametitle{Theorem}
-\begin{theorem}[Mass--energy equivalence]
-$E = mc^2$
-\end{theorem}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}[fragile] % Need to use the fragile option when verbatim is used in the slide
-\frametitle{Verbatim}
-\begin{example}[Theorem Slide Code]
-\begin{verbatim}
-\begin{frame}
-\frametitle{Theorem}
-\begin{theorem}[Mass--energy equivalence]
-$E = mc^2$
-\end{theorem}
-\end{frame}\end{verbatim}
-\end{example}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}
-\frametitle{Figure}
-Uncomment the code on this slide to include your own image from the same directory as the template .TeX file.
-%\begin{figure}
-%\includegraphics[width=0.8\linewidth]{test}
-%\end{figure}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}[fragile] % Need to use the fragile option when verbatim is used in the slide
-\frametitle{Citation}
-An example of the \verb|\cite| command to cite within the presentation:\\~
-
-This statement requires citation \cite{p1}.
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}
-\frametitle{References}
-\footnotesize{
-\begin{thebibliography}{99} % Beamer does not support BibTeX so references must be inserted manually as below
-\bibitem[Smith, 2012]{p1} John Smith (2012)
-\newblock Title of the publication
-\newblock \emph{Journal Name} 12(3), 45 -- 678.
-\end{thebibliography}
-}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}
-\Huge{\centerline{The End}}
-\end{frame}
-
-%----------------------------------------------------------------------------------------
 
 \end{document}
