@@ -91,7 +91,7 @@
 {
 Università degli studi di Udine \\ % Your institution for the title page
 \medskip
-%\textit{john@smith.com} % Your email address
+Advanced Algorithms
 }
 \date{} % Date, can be changed to a custom date
 
@@ -142,10 +142,10 @@ Obiettivo del \textbf{problema del massimo flusso} è, data una rete di flusso, 
 -applicazioni? (es. matching bipartito di cardinalità massima)
 \end{frame}
 
-\section{L'algoritmo di Ford-Fulkerson}
+\section{Il metodo di Ford-Fulkerson}
 
 \begin{frame}
-\frametitle{L'algoritmo di Ford-Fulkerson}
+\frametitle{Il metodo di Ford-Fulkerson}
 Concetti:
 \begin{itemize}
 \item Rete residua
@@ -173,8 +173,8 @@ In $G_f$ avrò gli stessi nodi presenti in $G$, mentre gli archi saranno tutti g
 \end{frame}
 
 \begin{frame}
-\frametitle{L'algoritmo di Ford-Fulkerson\\Rete residua}
-Idea: un flusso individuato nella rete residua mi permette di aumentare il flusso nella rete originale.\\
+\frametitle{Il metodo di Ford-Fulkerson\\Rete residua}
+Idea: un flusso individuato nella rete residua permette di aumentare il flusso nella rete originale.\\
 Dati $f$ flusso in $G$ e $f'$ flusso in $G_f$, definisco la funzione $(f\uparrow f'):V\times V\rightarrow \mathbb{R}$ nel seguente modo:\\
 $$(f\uparrow f')(u,v) =
 \left\{
@@ -189,7 +189,7 @@ La funzione $f\uparrow f'$ è un flusso in $G$ avente valore $|f\uparrow f'|=|f|
 \end{frame}
 
 \begin{frame}
-\frametitle{L'algoritmo di Ford-Fulkerson\\Cammino aumentante}
+\frametitle{Il metodo di Ford-Fulkerson\\Cammino aumentante}
 Data una rete di flusso $G$ e un flusso $f$, un \textbf{cammino aumentante} è un cammino semplice che va da $s$ a $t$ nella rete residua $G_f$.\\
 Dato un cammino aumentante $p$, chiamiamo \textbf{capacità residua} di $p$ la massima quantità di flusso che è possibile mandare su questo cammino:\\
 $c_f(p)=min\{c_f(u,v):(u,v) \mbox{ sta in } p\}$.\\
@@ -210,7 +210,7 @@ $f\uparrow f_p$ è un flusso in $G$ di valore $|f\uparrow f'|=|f|+|f_p|>|f|.$
 \end{frame}
 
 \begin{frame}
-\frametitle{L'algoritmo di Ford-Fulkerson\\Taglio}
+\frametitle{Il metodo di Ford-Fulkerson\\Taglio}
 Un \textbf{taglio} $(S,T)$ di una rete di flusso $G=(V,E)$ è una partizione di $V$ in $S$ e $T$ tale che $s\in S$ e $t\in T$.\\
 Dato $f$ flusso, esprimiamo con $f(S,T)$ il \textbf{flusso che attraversa il taglio}:
 $$f(S,T)=\sum\limits_{u\in S}\sum\limits_{v\in T}f(u,v)-
@@ -221,7 +221,7 @@ Il \textbf{taglio minimo} è il taglio di capacità minima fra i tagli della ret
 \end{frame}
 
 \begin{frame}
-\frametitle{L'algoritmo di Ford-Fulkerson\\Taglio}
+\frametitle{Il metodo di Ford-Fulkerson\\Taglio}
 \begin{block}{Lemma}
 Dati $f$ flusso in $G$ con $s$ sorgente e $t$ pozzo, e (S,T) un qualsiasi taglio di $G$, il flusso attraverso $(S,T)$ è $f(S,T)=|f|$.
 \end{block}
@@ -239,7 +239,7 @@ Dati $f$ flusso in una rete $G=(V,E)$ con $s$ sorgente e $t$ pozzo, le seguenti 
 \end{frame}
 
 \begin{frame}
-\frametitle{L'algoritmo di Ford-Fulkerson\\Pseudocodice}
+\frametitle{Il metodo di Ford-Fulkerson\\Pseudocodice}
 \begin{algorithm}[H]
     \caption{Ford-Fulkerson(G,s,t)}%\label{euclid}
     \begin{algorithmic}[1]
@@ -258,10 +258,20 @@ Dati $f$ flusso in una rete $G=(V,E)$ con $s$ sorgente e $t$ pozzo, le seguenti 
 \end{frame}
 
 \begin{frame}
-osservazioni: complessità dell'algoritmo
+\frametitle{Il metodo di Ford-Fulkerson\\Complessità}
+Una possibile implementazione del metodo consiste nello scegliere il cammino aumentante alla linea 3 in maniera arbitraria: l'algoritmo che si ottiene termina sempre a patto che le capacità degli archi siano valori razionali.\\
+Per il caclolo della complessità, possiamo ridurci al caso in cui le capacità prendono valori interi.\\
+Il ciclo \textbf{for} alle linee 1-2 ha complessità $O(|E|)$.\\
+Se chiamiamo $f^*$ il flusso massimo, abbiamo che il ciclo \textbf{while} alla linea 3 verrà eseguito al più $|f^*|$ volte (ad ogni iterazione il valore del flusso aumenterà almeno di una unità). Trovare un cammino nella rete residua costa $O(|V|+|E|)=O(|E|)$ con BFS o DFS.\\
+La complessità dell'algoritmo è quindi $O(|E||f^*|)$. L'algoritmo è pseudopolinomiale.
 \end{frame}
 
 \section{L'algoritmo di Edmonds-Karp}
+
+\begin{frame}
+\frametitle{L'algoritmo di Edmonds-Karp}
+L'algoritmo di Edmonds-Karp è un'implementazione del metodo di Ford-Fulkerson che ci permette di risolvere il problema del massimo flusso in tempo $O(|V||E|^2)$. L'algoritmo utilizza una ricerca in ampiezza per trovare, ad ogni iterazione, il \textbf{cammino più breve} da $s$ a $t$ nella rete residua.
+\end{frame}
 
 \begin{frame}
 \end{frame}
