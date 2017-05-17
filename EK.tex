@@ -213,6 +213,15 @@ $f\uparrow f_p$ è un flusso in $G$ di valore $|f\uparrow f'|=|f|+|f_p|>|f|.$
 \end{block}
 \end{frame}
 
+\begin{frame}
+\frametitle{Il metodo di Ford-Fulkerson\\Esempio rete residua}
+Rete di flusso (flusso\textbf{/}capacità) e corrispondente rete residua:
+\begin{figure}
+\includegraphics[width=0.8\linewidth]{1.png}\\
+\includegraphics[width=0.8\linewidth]{2.png}
+\end{figure}
+\end{frame}
+
 \subsection{Taglio}
 
 \begin{frame}
@@ -270,6 +279,16 @@ Per il caclolo della complessità, possiamo ridurci al caso in cui le capacità 
 Il ciclo \textbf{for} alle linee 1-2 ha complessità $O(|E|)$.\\
 Se chiamiamo $f^*$ il flusso massimo, abbiamo che il ciclo \textbf{while} alla linea 3 verrà eseguito al più $|f^*|$ volte (ad ogni iterazione il valore del flusso aumenterà almeno di una unità). Trovare un cammino nella rete residua costa $O(|V|+|E|)=O(|E|)$ con BFS o DFS.\\
 La complessità dell'algoritmo è quindi $O(|E|\cdot|f^*|)$. L'algoritmo è pseudopolinomiale.
+\end{frame}
+
+\begin{frame}
+\frametitle{Il metodo di Ford-Fulkerson\\Caso pessimo}
+Le prime tre immagini mostrano il primo passo dell'algoritmo e la successiva selezione del cammino aumentante. L'ultima immagine mostra lo stato al quale si arriva dopo 2000 iterazioni.
+\begin{figure}
+\includegraphics[width=0.3\linewidth]{11.png}
+\includegraphics[width=0.3\linewidth]{12.png}\\\includegraphics[width=0.3\linewidth]{13.png}
+\includegraphics[width=0.3\linewidth]{14.png}
+\end{figure}
 \end{frame}
 
 \section{L'algoritmo di Edmonds-Karp}
