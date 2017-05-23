@@ -136,12 +136,6 @@ $$|f|=\sum\limits_{v\in V}f(s,v)-\sum\limits_{v\in V}f(v,s)$$
 Obiettivo del \textbf{problema del massimo flusso} è, data una rete di flusso, trovare il flusso di valore massimo.
 \end{frame}
 
-\begin{frame}
--più sorgenti/più pozzi?\\
--ammettere archi $(u,v)$ con $(v,u)\in E$?\\
--applicazioni? (es. matching bipartito di cardinalità massima)
-\end{frame}
-
 \section{Il metodo di Ford-Fulkerson}
 
 \begin{frame}
@@ -159,7 +153,7 @@ Per poi arrivare al \textbf{Teorema del flusso massimo e taglio minimo} (permett
 
 \begin{frame}
 \frametitle{L'algoritmo di Ford-Fulkerson\\Rete residua}
-Dati una rete $G$ e un flusso $f$, la rete residua $G_f$ rappresenta in che modo è possibile cambiare il flusso in $G$.\\
+Dati una rete $G$ e un flusso $f$, la rete residua $G_f=(V_f,E_f)$ permette di identificare i cammini lungo i quali è possibile aumentare il flusso.\\
 Ponendo $G=(V,E)$, $s$ sorgente e $t$ pozzo, Possiamo definire la \textbf{capacità residua} $c_f$ nel seguente modo:\\
 $$c_f(u,v) =
 \left\{
@@ -190,6 +184,15 @@ La funzione $f\uparrow f'$ è un flusso in $G$ avente valore $|f\uparrow f'|=|f|
 \end{block}
 \end{frame}
 
+\begin{frame}
+\frametitle{Il metodo di Ford-Fulkerson\\Esempio rete residua}
+Rete di flusso (flusso\textbf{/}capacità) e corrispondente rete residua:
+\begin{figure}
+\includegraphics[width=0.8\linewidth]{1.png}\\
+\includegraphics[width=0.8\linewidth]{2.png}
+\end{figure}
+\end{frame}
+
 \subsection{Cammino aumentante}
 
 \begin{frame}
@@ -211,15 +214,6 @@ $f_p$ è un flusso in $G_f$ di valore $|f_p|=c_f(p)>0$.
 \begin{block}{Corollario}
 $f\uparrow f_p$ è un flusso in $G$ di valore $|f\uparrow f'|=|f|+|f_p|>|f|.$
 \end{block}
-\end{frame}
-
-\begin{frame}
-\frametitle{Il metodo di Ford-Fulkerson\\Esempio rete residua}
-Rete di flusso (flusso\textbf{/}capacità) e corrispondente rete residua:
-\begin{figure}
-\includegraphics[width=0.8\linewidth]{1.png}\\
-\includegraphics[width=0.8\linewidth]{2.png}
-\end{figure}
 \end{frame}
 
 \subsection{Taglio}
@@ -297,7 +291,33 @@ Le prime tre immagini mostrano il primo passo dell'algoritmo e la successiva sel
 \frametitle{L'algoritmo di Edmonds-Karp}
 L'algoritmo di Edmonds-Karp è un'implementazione del metodo di Ford-Fulkerson che ci permette di risolvere il problema del massimo flusso in tempo $O(|V|\cdot|E|^2)$. L'algoritmo utilizza una ricerca in ampiezza per trovare, ad ogni iterazione, il \textbf{cammino minimo} da $s$ a $t$ nella rete residua.
 \begin{block}{Lemma}
-Dato $G=(V,E)$ con $s$ sorgente e $t$ pozzo, per tutti i $v\in V\setminus\{s,t\}$ abbiamo che la lunghezza del cammino minimo fra $s$ e $v$ nella rete residua $G_f$ aumenta in maniera monotona durante l'esecuzione dell'algoritmo (in particolare, ad ogni aumento del flusso).
+Dato $G=(V,E)$ con $s$ sorgente e $t$ pozzo, per tutti i $v\in V\setminus\{s,t\}$ abbiamo che la lunghezza del cammino minimo $\delta_f(s,v)$ fra $s$ e $v$ nella rete residua $G_f$ aumenta monotonicamente durante l'esecuzione dell'algoritmo (in particolare, ad ogni aumento del flusso).
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{L'algoritmo di Edmonds-Karp}
+\begin{block}{Dimostrazione}
+Supponiamo, per assurdo, che esista un vertice $v\in V\setminus\{s,t\}$ per il quale, in corrispondenza di un aumento del flusso, la distanza da $s$ si riduca. Chiamiamo $f$ il flusso prima di questo aumento, e $f'$ il flusso risultante. Sia $v$ il nodo tale che $\delta_{f'}(s,v)<\delta_f(s,v)$ e per il quale $\delta_{f'}(s,v)$ è minima. Sia inoltre $p=s\leadsto u\rightarrow v$ un cammino minimo da $s$ a $v$ in $G_{f'}$.\\
+Abbiamo $\delta_{f'}(s,u)=\delta_{f'}(s,v)-1$.\\
+Per come abbiamo scelto $v$, sappiamo inoltre che $\delta_{f'}(s,u)\geq \delta_f(s,u)$.\\
+Se $(u,v)\in E_{f}$ avremmo:\\
+$\delta_f(s,v)\ \leq\ \delta_f(s,u)+1$\ \ \ (disuguaglianza triangolare)\\
+$\ \ \ \ \ \ \ \ \ \ \ \leq\ \delta_{f'}(s,u)+1$\\
+$\ \ \ \ \ \ \ \ \ \ \ =\ \delta_{f'}(s,v)$\\
+è una contraddizione, quindi $(u,v)\not\in E_f$.
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{L'algoritmo di Edmonds-Karp}
+\begin{block}{Dimostrazione}
+Abbiamo mostrato che $(u,v)\not\in E_f$, sappiamo inoltre che $(u,v)\in E_{f'}$. Questo significa che l'aumento di flusso deve aver aumentato il flusso da $v$ a $u$.\\
+L'algoritmo che stiamo analizzando aumenta sempre il flusso sul cammino minimo, quindi il cammino minimo da $s$ a $u$ in $G_f$ ha $(v,u)$ come ultimo arco. Abbiamo quindi:\\
+$\delta_f(s,v)\ =\ \delta_f(s,u)-1$\\
+$\ \ \ \ \ \ \ \ \ \ \ \leq\ \delta_{f'}(s,u)-1$\\
+$\ \ \ \ \ \ \ \ \ \ \ =\ \delta_{f'}(s,v)-2$\\
+Questo contraddice la nostra assunzione iniziale, cioè $\delta_{f'}(s,v)<\delta_f(s,v)$. Non esiste quindi un nodo $v$ con queste caratteristiche.
 \end{block}
 \end{frame}
 
@@ -306,7 +326,36 @@ Dato $G=(V,E)$ con $s$ sorgente e $t$ pozzo, per tutti i $v\in V\setminus\{s,t\}
 \begin{block}{Teorema}
 Data una rete di flusso $G=(V,E)$, l'algoritmo di Edmonds-Karp aumenta il valore del flusso $O(|V|\cdot|E|)$ volte.
 \end{block}
-Come visto precedentemente, possiamo individuare un cammino aumentante utilizzando BFS in tempo $O(|E|)$. La complessità dell'algoritmo è quindi $O(|V|\cdot|E|^2)$.
+\begin{block}{Dimostrazione}
+Un arco $(u,v)$ appartenente ad un cammino aumentante è \textbf{critico} se $c_f(p)=c_f(u,v)$. Quando aumentiamo il flusso, tutti gli archi critici appartenenti al cammino aumentante scompaiono dalla rete residua (inoltre, ogni cammino aumentante ha almeno un arco critico).\\
+Quello che mostriamo è che ogni arco può diventare critico al più $|V|/2$ volte.
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{L'algoritmo di Edmonds-Karp}
+\begin{block}{Dimostrazione}
+Siano $u,v$ nodi in $V$ tali che $(u,v)\in E$. Quando $(u,v)$ diventa critico per la prima volta, avremo $\delta_f(s,v)=\delta_f(s,u)+1$.\\
+Dopo aver aumentato il flusso, l'arco $(u,v)$ scomparirà dalla rete residua.\\
+Per far sì che $(u,v)$ ricompaia su un altro cammino aumentante, il flusso da $u$ a $v$ deve diminuire, cosa che succede solamente quando $(v,u)$ compare su un cammino aumentante.\\
+Sia $f'$ un flusso tale che $(v,u)$ compare su un cammino aumentante.\\
+Abbiamo:\\
+$\delta_{f'}(s,u)\ =\ \delta_{f'}(s,v)+1$\\
+$\ \ \ \ \ \ \ \ \ \ \ \ \geq\ \delta_{f}(s,v)+1$\ \ \ \ (Lemma)\\
+$\ \ \ \ \ \ \ \ \ \ \ \ =\ \delta_{f}(s,u)+2$\\
+Questo dimostra che da quando $(u,v)$ diventa critico al successivo momento in cui sarà critico, la distanza da $s$ ad $u$ aumenterà almeno di 2.
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{L'algoritmo di Edmonds-Karp}
+\begin{block}{Dimostrazione}
+I nodi intermedi di un cammino minimo da $s$ a $u$ non possono mai contenere $s$, $u$ o $t$. Quindi, la sua distanza (dopo ogni iterazione) sarà al massimo $|V|-2$.\\
+Dopo che $(u,v)$ è diventato critico per la prima volta, può ridiventarlo al più altre $(|V|-2)/2=|V|/2-1$ volte, per un totale di $|V|/2$ volte.\\
+Visto che il numero di archi che possono comparire in una rete residua è $O(|E|)$, il numero totale di archi critici durante l'esecuzione dell'algoritmo sarà $O(|V|\cdot|E|)$
+\end{block}
+Come visto precedentemente, possiamo individuare un cammino aumentante utilizzando BFS in tempo $O(|E|)$. La complessità dell'algoritmo è quindi
+ $O(|V|\cdot|E|^2)$.
 \end{frame}
 
 \begin{frame}
