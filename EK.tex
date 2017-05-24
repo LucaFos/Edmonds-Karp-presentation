@@ -287,6 +287,8 @@ Le prime tre immagini mostrano il primo passo dell'algoritmo e la successiva sel
 
 \section{L'algoritmo di Edmonds-Karp}
 
+\subsection{Algoritmo}
+
 \begin{frame}
 \frametitle{L'algoritmo di Edmonds-Karp}
 L'algoritmo di Edmonds-Karp è un'implementazione del metodo di Ford-Fulkerson che ci permette di risolvere il problema del massimo flusso in tempo $O(|V|\cdot|E|^2)$. L'algoritmo utilizza una ricerca in ampiezza per trovare, ad ogni iterazione, il \textbf{cammino minimo} da $s$ a $t$ nella rete residua.
@@ -294,6 +296,8 @@ L'algoritmo di Edmonds-Karp è un'implementazione del metodo di Ford-Fulkerson c
 Dato $G=(V,E)$ con $s$ sorgente e $t$ pozzo, per tutti i $v\in V\setminus\{s,t\}$ abbiamo che la lunghezza del cammino minimo $\delta_f(s,v)$ fra $s$ e $v$ nella rete residua $G_f$ aumenta monotonicamente durante l'esecuzione dell'algoritmo (in particolare, ad ogni aumento del flusso).
 \end{block}
 \end{frame}
+
+\subsection{Complessità asintotica}
 
 \begin{frame}
 \frametitle{L'algoritmo di Edmonds-Karp}
@@ -356,6 +360,29 @@ Visto che il numero di archi che possono comparire in una rete residua è $O(|E|
 \end{block}
 Come visto precedentemente, possiamo individuare un cammino aumentante utilizzando BFS in tempo $O(|E|)$. La complessità dell'algoritmo è quindi
  $O(|V|\cdot|E|^2)$.
+\end{frame}
+
+\section{Algoritmi push-relabel}
+
+\begin{frame}
+\frametitle{Algoritmi push-relabel}
+L'approccio push-relabel consente di risolvere il problema del massimo flusso più velocemente rispetto all'approccio di Edmonds-Karp: arriveremo ad un algoritmo di complessità $O(|V|^3)$, uno degli algoritmi asintoticamente più veloci per questo tipo di problema.\\
+Gli algoritmi push-relabel mantengono durante l'esecuzione il vincolo di capacità ma rilassano il vincolo di conservazione del flusso: richiediamo solamente che la quantità di flusso uscente da un nodo (fatta eccezione per sorgente e pozzo) non superi la quantità di flusso entrante:\\
+$\sum\limits_{v\in V}f(v,u)-\sum\limits_{v\in V}f(u,v)\geq 0$\\
+Chiamiamo inoltre \textbf{eccesso di flusso} la seguente quantità:\\
+$e(u)=\sum\limits_{v\in V}f(v,u)-\sum\limits_{v\in V}f(u,v)$\\
+L'idea alla base di questi algoritmi consiste nell'assegnare ad ogni nodo un'altezza, e fare in modo che un nodo $u$ possa aumentare il flusso su un arco $(u,v)$ solamente se $v$ sta ``più in basso".
+\end{frame}
+
+\begin{frame}
+\frametitle{Algoritmi push-relabel}
+\begin{itemize}
+\item Inizialmente, alla sorgente assegnamo altezza $|V|$ mentre al pozzo assegnamo 0.
+\item Assegnamo più flusso possibile agli archi uscenti dalla sorgente e avremo che uno o più nodi del grafo avranno degli eccessi di flusso positivi.
+\item Scelto uno di questi nodi ($u$), aumentiamo la sua altezza in modo che sia almeno uguale all'altezza del ``più basso" dei suoi vicini ($v$) tale che sia ancora possibile aumentare il flusso su $(u,v)$. Questo ci permette di assegnare del flusso ad almeno un arco uscente dal nodo.
+\item Iterando queste operazioni, arriveremo ad un punto nel quale il pozzo riceve la massima quantità di flusso possibile ma il nostro flusso non è un flusso legale visto che (in generale) viola il vincolo di conservazione (del flusso stesso).
+\item Per renderlo legale permettiamo che l'altezza dei nodi possa superare $|V|$. In questo modo, il flusso in eccesso viene ``spinto" di nuovo alla sorgente e otteniamo un flusso vero e proprio (legale e massimo).
+\end{itemize}
 \end{frame}
 
 \begin{frame}
