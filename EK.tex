@@ -368,7 +368,7 @@ Come visto precedentemente, possiamo individuare un cammino aumentante utilizzan
 
 \begin{frame}
 \frametitle{Algoritmi push-relabel\\Un algoritmo push-relabel generico}
-L'approccio push-relabel consente di risolvere il problema del massimo flusso più velocemente rispetto all'approccio di Edmonds-Karp: arriveremo ad un algoritmo di complessità $O(|V|^3)$, uno degli algoritmi più veloci per questo tipo di problema.\\
+L'approccio \textbf{push-relabel} consente di risolvere il problema del massimo flusso più velocemente rispetto all'approccio di Edmonds-Karp: arriveremo ad un algoritmo di complessità $O(|V|^3)$, uno degli algoritmi più veloci per questo tipo di problema.\\
 Gli algoritmi push-relabel mantengono durante l'esecuzione il vincolo di capacità ma rilassano il vincolo di conservazione del flusso: richiediamo solamente che la quantità di flusso uscente da un nodo (fatta eccezione per sorgente e pozzo) non superi la quantità di flusso entrante:\\
 $\sum\limits_{v\in V}f(v,u)-\sum\limits_{v\in V}f(u,v)\geq 0$\\
 Chiamiamo inoltre \textbf{eccesso di flusso} la seguente quantità:\\
@@ -416,7 +416,49 @@ Quando $u.e>0$ e per ogni $(u,v)\in E_f$ si ha $u.h\leq v.h$, possiamo eseguire 
     \end{algorithmic}
     \label{alg_1}
 \end{algorithm}
-La precondizione è sufficiente a garantire che esista almeno un arco uscente da $u$ nella rete residua: $u.e>0$ implica l'esistenza di almeno un nodo $v$ tale che $(v,u).f>0$. Quindi, $c_f(u,v)>0$ che a sua volta implica $(u,v)\in E_f$.
+La precondizione è sufficiente a garantire che esista almeno un arco uscente da $u$ nella rete residua.\\
+$u.e>0$ implica l'esistenza di almeno un nodo $v$ tale che $(v,u).f>0$,  quindi $c_f(u,v)>0$ che a sua volta implica $(u,v)\in E_f$.
+\end{frame}
+
+\begin{frame}
+\frametitle{Algoritmi push-relabel\\Un algoritmo push-relabel generico}
+Procedura che esegue l'inizializzazione:
+\begin{algorithm}[H]
+    \caption{Initialize(G,s)}%\label{euclid}
+    \begin{algorithmic}[1]
+        \State \textbf{for} each vertex $v\in V$
+        \State \ \ \ \ \ \ $v.h=0$
+        \State \ \ \ \ \ \ $v.e=0$
+        \State $s.h=|V|$
+        \State \textbf{for} each $(u,v)\in E$
+        \State \ \ \ \ \ \ $(u,v).f=0$
+        \State \textbf{for} each vertex $v\in s.Adj$
+        \State \ \ \ \ \ \ $(s,v).f=c(s,v)$
+        \State \ \ \ \ \ \ $v.e=c(s,v)$
+        \State \ \ \ \ \ \ $s.e=s.e-c(s,v)$
+    \end{algorithmic}
+    \label{alg_1}
+\end{algorithm}
+\end{frame}
+
+\begin{frame}
+\frametitle{Algoritmi push-relabel\\Un algoritmo push-relabel generico}
+\begin{algorithm}[H]
+    \caption{Generic-push-relabel(G)}%\label{euclid}
+    \begin{algorithmic}[1]
+        \State Initialize(G,s)
+        \State \textbf{while} esiste un'operazione PUSH o RELABEL applicabile
+        \State \ \ \ \ \ \ seleziona un'operazione ed eseguila
+    \end{algorithmic}
+    \label{alg_1}
+\end{algorithm}
+E' possibile mostrare che questo algoritmo ha complessità asintotica pari a $O(|V|^2\cdot|E|)$.
+\end{frame}
+
+\subsection{Algoritmo relabel-to-front}
+\begin{frame}
+\frametitle{Algoritmi push-relabel\\Algoritmo relabel-to-front}
+L'algoritmo \textbf{relabel-to-front} è un algoritmo push-relabel nel quale viene specificato l'ordine con il quale applicare le operazioni di base (PUSH e RELABEL). Questo accorgimento permette di ottenere una complessità pari a $O(|V|^3)$ (l'algoritmo generico ha complessità $O(|V|^2\cdot|E|)$.
 \end{frame}
 
 \end{document}
