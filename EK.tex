@@ -389,9 +389,9 @@ L'idea alla base di questi algoritmi consiste nell'assegnare ad ogni nodo un'alt
 
 \begin{frame}
 \frametitle{Algoritmi push-relabel\\Algoritmo generico}
-Quando $u.e>0$, $c_f(u,v)>0$ e $u.h=v.h+1$ possiamo eseguire un'operazione di PUSH:
+Quando $u.e>0$, $c_f(u,v)>0$ e $u.h=v.h+1$ possiamo eseguire un'operazione di Push:
 \begin{algorithm}[H]
-    \caption{PUSH(u,v)}%\label{euclid}
+    \caption{Push(u,v)}%\label{euclid}
     \begin{algorithmic}[1]
         \State $\Delta_f(u,v)=min(u.e,c_f(u,v))$
         \State \textbf{if} $(u,v)\in E$
@@ -408,9 +408,9 @@ La linea 5 corrisponde ad una diminuzione del flusso sull'arco (v,u). Questo acc
 
 \begin{frame}
 \frametitle{Algoritmi push-relabel\\Algoritmo generico}
-Quando $u.e>0$ e per ogni $(u,v)\in E_f$ si ha $u.h\leq v.h$, possiamo eseguire un'operazione di RELABEL:
+Quando $u.e>0$ e per ogni $(u,v)\in E_f$ si ha $u.h\leq v.h$, possiamo eseguire un'operazione di Relabel:
 \begin{algorithm}[H]
-    \caption{RELABEL(u)}%\label{euclid}
+    \caption{Relabel(u)}%\label{euclid}
     \begin{algorithmic}[1]
         \State $u.h=1+min\{v.h:(u,v)\in E_f\}$
     \end{algorithmic}
@@ -447,7 +447,7 @@ La linea 10 serve ad impedire che l'algoritmo inizi a ciclare scegliendo $s$ com
     \caption{Generic-push-relabel(G)}%\label{euclid}
     \begin{algorithmic}[1]
         \State Initialize(G,s)
-        \State \textbf{while} esiste un'operazione PUSH o RELABEL applicabile
+        \State \textbf{while} esiste un'operazione Push o Relabel applicabile
         \State \ \ \ \ \ \ seleziona un'operazione ed eseguila
     \end{algorithmic}
     \label{alg_1}
@@ -459,13 +459,48 @@ E' possibile mostrare che questo algoritmo ha complessità asintotica pari a $O(
 
 \begin{frame}
 \frametitle{Algoritmi push-relabel\\Algoritmo relabel-to-front}
-L'algoritmo \textbf{relabel-to-front} è un algoritmo push-relabel nel quale viene specificato l'ordine con il quale applicare le operazioni di base (PUSH e RELABEL) tramite un'opportuna struttura dati.\\
+L'algoritmo \textbf{relabel-to-front} è un algoritmo push-relabel nel quale viene specificato l'ordine con il quale applicare le operazioni di base (Push e Relabel) tramite un'opportuna struttura dati.\\
 Questo accorgimento permette di ottenere una complessità pari a $O(|V|^3)$ (l'algoritmo generico ha complessità $O(|V|^2\cdot|E|)$).
 \end{frame}
 
 \begin{frame}
 \frametitle{Algoritmi push-relabel\\Algoritmo relabel-to-front}
+\begin{algorithm}[H]
+    \caption{Discharge(u)}%\label{euclid}
+    \begin{algorithmic}[1]
+        \State \textbf{while} $u.e>0$
+        \State \ \ \ \ \ \ $v=u.current$
+        \State \ \ \ \ \ \ \textbf{if} $v==NIL$
+        \State \ \ \ \ \ \ \ \ \ \ \ \ Relabel(u)
+        \State \ \ \ \ \ \ \ \ \ \ \ \ $u.current=u.N.head$
+        \State \ \ \ \ \ \ \textbf{elseif} $c_f(u,v)>0\ \wedge\ u.h==v.h+1$
+        \State \ \ \ \ \ \ \ \ \ \ \ \ Push(u,v)
+        \State \ \ \ \ \ \ \textbf{else}
+        \State \ \ \ \ \ \ \ \ \ \ \ \ $u.current=v.next\mbox{-}neighbor$
+    \end{algorithmic}
+    \label{alg_1}
+\end{algorithm}
+\end{frame}
 
+\begin{frame}
+\frametitle{Algoritmi push-relabel\\Algoritmo relabel-to-front}
+\begin{algorithm}[H]
+    \caption{Relabel-to-front(G,s,t)}%\label{euclid}
+    \begin{algorithmic}[1]
+        \State Initialize(G,s)
+        \State $L=V\setminus\{s,t\}$
+        \State \textbf{for} each vertex $u\in V\setminus\{s,t\}$
+        \State \ \ \ \ \ \ $u.current=u.N.head$
+        \State $u=L.head$
+        \State \textbf{while} $u\not =NIL$
+        \State \ \ \ \ \ \ $old\mbox{-}height=u.h$
+        \State \ \ \ \ \ \ Discharge(u)
+        \State \ \ \ \ \ \ \textbf{if} $u.h>old\mbox{-}height$
+        \State \ \ \ \ \ \ \ \ \ \ \ \ move $u$ to the front of $L$
+        \State \ \ \ \ \ \ $u=u.next$
+    \end{algorithmic}
+    \label{alg_1}
+\end{algorithm}
 \end{frame}
 
 \end{document}
