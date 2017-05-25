@@ -364,9 +364,11 @@ Come visto precedentemente, possiamo individuare un cammino aumentante utilizzan
 
 \section{Algoritmi push-relabel}
 
+\subsection{Un algoritmo push-relabel generico}
+
 \begin{frame}
-\frametitle{Algoritmi push-relabel}
-L'approccio push-relabel consente di risolvere il problema del massimo flusso più velocemente rispetto all'approccio di Edmonds-Karp: arriveremo ad un algoritmo di complessità $O(|V|^3)$, uno degli algoritmi asintoticamente più veloci per questo tipo di problema.\\
+\frametitle{Algoritmi push-relabel\\Un algoritmo push-relabel generico}
+L'approccio push-relabel consente di risolvere il problema del massimo flusso più velocemente rispetto all'approccio di Edmonds-Karp: arriveremo ad un algoritmo di complessità $O(|V|^3)$, uno degli algoritmi più veloci per questo tipo di problema.\\
 Gli algoritmi push-relabel mantengono durante l'esecuzione il vincolo di capacità ma rilassano il vincolo di conservazione del flusso: richiediamo solamente che la quantità di flusso uscente da un nodo (fatta eccezione per sorgente e pozzo) non superi la quantità di flusso entrante:\\
 $\sum\limits_{v\in V}f(v,u)-\sum\limits_{v\in V}f(u,v)\geq 0$\\
 Chiamiamo inoltre \textbf{eccesso di flusso} la seguente quantità:\\
@@ -375,18 +377,46 @@ L'idea alla base di questi algoritmi consiste nell'assegnare ad ogni nodo un'alt
 \end{frame}
 
 \begin{frame}
-\frametitle{Algoritmi push-relabel}
+\frametitle{Algoritmi push-relabel\\Un algoritmo push-relabel generico}
 \begin{itemize}
-\item Inizialmente, alla sorgente assegnamo altezza $|V|$ mentre al pozzo assegnamo 0.
-\item Assegnamo più flusso possibile agli archi uscenti dalla sorgente e avremo che uno o più nodi del grafo avranno degli eccessi di flusso positivi.
-\item Scelto uno di questi nodi ($u$), aumentiamo la sua altezza in modo che sia almeno uguale all'altezza del ``più basso" dei suoi vicini ($v$) tale che sia ancora possibile aumentare il flusso su $(u,v)$. Questo ci permette di assegnare del flusso ad almeno un arco uscente dal nodo.
-\item Iterando queste operazioni, arriveremo ad un punto nel quale il pozzo riceve la massima quantità di flusso possibile ma il nostro flusso non è un flusso legale visto che (in generale) viola il vincolo di conservazione (del flusso stesso).
-\item Per renderlo legale permettiamo che l'altezza dei nodi possa superare $|V|$. In questo modo, il flusso in eccesso viene ``spinto" di nuovo alla sorgente e otteniamo un flusso vero e proprio (legale e massimo).
+\item Inizialmente, alla sorgente assegnamo altezza $|V|$ mentre al pozzo e a tutti gli altri nodi assegnamo 0.
+\item Assegnamo più flusso possibile agli archi uscenti dalla sorgente e avremo uno o più nodi del grafo aventi eccesso di flusso positivo.
+\item Scelto uno di questi nodi ($u$), aumentiamo la sua altezza in modo che superi di 1 l'altezza del ``più basso" dei suoi vicini ($v$) scelto in modo che sia possibile aumentare il flusso su $(u,v)$. A questo punto possiamo assegnare del flusso ad almeno un arco uscente dal nodo $u$.
+\item Iterando queste operazioni, arriveremo ad un punto nel quale il pozzo riceve la massima quantità di flusso possibile. Il flusso non è però legale visto che (in generale) può violare il vincolo di conservazione.
+\item Per renderlo legale permettiamo che l'altezza dei nodi possa superare $|V|$. In questo modo, il flusso in eccesso viene ``spinto" di nuovo alla sorgente (cancellazione) e otteniamo un flusso vero e proprio (legale e massimo).
 \end{itemize}
 \end{frame}
 
 \begin{frame}
-Algoritmi basati su ford-fulkerson di complessità minore (push relabel o dinic)
+\frametitle{Algoritmi push-relabel\\Un algoritmo push-relabel generico}
+Quando $u.e>0$, $c_f(u,v)>0$ e $u.h=v.h+1$ possiamo eseguire un'operazione di PUSH:
+\begin{algorithm}[H]
+    \caption{PUSH(u,v)}%\label{euclid}
+    \begin{algorithmic}[1]
+        \State $\Delta_f(u,v)=min(u.e,c_f(u,v))$
+        \State \textbf{if} $(u,v)\in E$
+        \State \ \ \ \ \ \ $(u,v).f = (u,v).f+\Delta_f(u,v)$
+        \State \textbf{else}
+        \State \ \ \ \ \ \ $(v,u).f = (v,u).f-\Delta_f(u,v)$
+        \State $u.e=u.e-\Delta_f(u,v)$
+        \State $v.e=v.e+\Delta_f(u,v)$
+    \end{algorithmic}
+    \label{alg_1}
+\end{algorithm}
+La linea 5 corrisponde ad una diminuzione del flusso sull'arco (v,u). Questo succede quando l'arco nella rete residua corrisponde all'inverso di un arco nella rete originale.
+\end{frame}
+
+\begin{frame}
+\frametitle{Algoritmi push-relabel\\Un algoritmo push-relabel generico}
+Quando $u.e>0$ e per ogni $(u,v)\in E_f$ si ha $u.h\leq v.h$, possiamo eseguire un'operazione di RELABEL:
+\begin{algorithm}[H]
+    \caption{RELABEL(u)}%\label{euclid}
+    \begin{algorithmic}[1]
+        \State $u.h=1+min\{v.h:(u,v)\in E_f\}$
+    \end{algorithmic}
+    \label{alg_1}
+\end{algorithm}
+La precondizione è sufficiente a garantire che esista almeno un arco uscente da $u$ nella rete residua: $u.e>0$ implica l'esistenza di almeno un nodo $v$ tale che $(v,u).f>0$. Quindi, $c_f(u,v)>0$ che a sua volta implica $(u,v)\in E_f$.
 \end{frame}
 
 \end{document}
