@@ -460,7 +460,10 @@ E' possibile mostrare che questo algoritmo ha complessità asintotica pari a $O(
 \begin{frame}
 \frametitle{Algoritmi push-relabel\\Algoritmo relabel-to-front}
 L'algoritmo \textbf{relabel-to-front} è un algoritmo push-relabel nel quale viene specificato l'ordine con il quale applicare le operazioni di base (Push e Relabel) tramite un'opportuna struttura dati.\\
-Questo accorgimento permette di ottenere una complessità pari a $O(|V|^3)$ (l'algoritmo generico ha complessità $O(|V|^2\cdot|E|)$).
+Questo accorgimento permette di ottenere una complessità pari a $O(|V|^3)$ (l'algoritmo generico ha complessità $O(|V|^2\cdot|E|)$).\\
+Una \textbf{Neighbor List} $u.N$ per il nodo $u$ è una linked list contenente (tutti) i vicini di $u$ (tutti i nodi tali che $(u,v)\in E$ oppure $(v,u)\in E$).\\
+Con l'attributo $u.N.head$ puntiamo al primo elemento della lista mentre $v.next\mbox{-}neighbor$ punta all'elemento che segue $v$ all'interno della lista.\\
+$u.current$ punta al nodo che sto attualmente analizzando in $u.N$.
 \end{frame}
 
 \begin{frame}
@@ -484,6 +487,7 @@ Questo accorgimento permette di ottenere una complessità pari a $O(|V|^3)$ (l'a
 
 \begin{frame}
 \frametitle{Algoritmi push-relabel\\Algoritmo relabel-to-front}
+Per definire l'algoritmo completo, utilizziamo un'ulterione lista $L$ contenente tutti i nodi eccetto sorgente e pozzo.
 \begin{algorithm}[H]
     \caption{Relabel-to-front(G,s,t)}%\label{euclid}
     \begin{algorithmic}[1]
