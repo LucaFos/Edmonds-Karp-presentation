@@ -93,7 +93,7 @@ Università degli studi di Udine \\ % Your institution for the title page
 \medskip
 Advanced Algorithms
 }
-\date{} % Date, can be changed to a custom date
+\date{13/06/2017} % Date, can be changed to a custom date
 
 \begin{document}
 
@@ -530,7 +530,29 @@ Durante l'esecuzione dell'algoritmo, il numero totale di operazioni di \textbf{p
 L'algoritmo relabel-to-front ha complessità $O(|V|^3)$.
 \end{block}
 \begin{block}{Dimostrazione}
+Poniamo un bound al numero di volte che \textbf{discharge} viene chiamato. Sappiamo che $O(|V|^2)$ è un bound per il numero delle operazioni \textbf{relabel}. Mostriamo che per ogni coppia di \textbf{relabel} consecutivi, abbiamo al più $|V|$ \textbf{discharge}: se \textbf{discharge} non esegue \textbf{relabel} andiamo avanti sulla lista $L$ che contiene $<|V|$ elementi, se invece esegue \textbf{relabel}, la chiamata successiva a \textbf{discharge} avverrà banalmente dopo il \textbf{relabel} stesso.\\
+Concludiamo quindi che \textbf{discharge} può essere chiamato al più $O(|V|^3)$ volte.
+\end{block}
+\end{frame}
 
+\begin{frame}
+\frametitle{Algoritmi push-relabel\\Complessità}
+\begin{block}{Dimostrazione}
+Analizziamo ora la complessità della procedura \textbf{discharge}.\\
+Ogni iterazione del ciclo while eseguirà una delle seguenti operazioni:\\
+\begin{itemize}
+\item \textbf{relabel}: in questo caso abbiamo un bound sul tempo totale richiesto per eseguire le operazioni \textbf{relabel}, $O(|V|\cdot|E|)$.
+\item \textbf{push}: sappiamo che il numero totale di operazioni \textbf{push} tale che l'arco viene \textbf{saturato} è $O(|V|\cdot|E|)$. Quando eseguiamo una \textbf{push} ``non-saturante" usciamo immediatamente dalla chiamata a \textbf{discharge} (perchè non è più presente flusso in eccesso) quindi questo tipo di \textbf{push} verrà eseguito in totale $O(|V|^3)$ volte.
+\item \textbf{aggiornamento} di $u.current$: ogni volta che su un nodo $u$ viene eseguito un \textbf{relabel}, abbiamo $O(grado(u))$ aggiornamenti del puntatore. Utilizzando l'uguaglianza \small$\sum\limits_{v\in V}$ $grado(v)=2|E|$ e il bound al numero di relabel di un vertice $O(|V|)$, otteniamo $O(|V|\cdot|E|)$.
+\end{itemize}
+
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Algoritmi push-relabel\\Complessità}
+\begin{block}{Dimostrazione}
+La complessità totale risulta quindi essere $O(|V|^3+|V|\cdot|E|)=O(|V|^3)$.
 \end{block}
 \end{frame}
 
