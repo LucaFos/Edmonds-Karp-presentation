@@ -247,6 +247,8 @@ Dati $f$ flusso in una rete $G=(V,E)$ con $s$ sorgente e $t$ pozzo, le seguenti 
 \end{block}
 \end{frame}
 
+\subsection{Complessità}
+
 \begin{frame}
 \frametitle{Il metodo di Ford-Fulkerson\\Pseudocodice}
 \begin{algorithm}[H]
@@ -297,7 +299,7 @@ Dato $G=(V,E)$ con $s$ sorgente e $t$ pozzo, per tutti i $v\in V\setminus\{s,t\}
 \end{block}
 \end{frame}
 
-\subsection{Complessità asintotica}
+\subsection{Complessità}
 
 \begin{frame}
 \frametitle{L'algoritmo di Edmonds-Karp}
@@ -505,6 +507,31 @@ Per definire l'algoritmo completo, utilizziamo un'ulterione lista $L$ contenente
     \end{algorithmic}
     \label{alg_1}
 \end{algorithm}
+\end{frame}
+
+\subsection{Complessità}
+
+\begin{frame}
+\frametitle{Algoritmi push-relabel\\Complessità}
+\begin{block}{Lemma}
+Il numero totale di operazioni \textbf{relabel} che eseguiamo è al più $2|V|-1$ per ogni vertice. In totale è minore di $2|V|^2$.
+\end{block}
+\begin{block}{Lemma}
+Il tempo totale che spendiamo per le operazioni di \textbf{relabel} è limitato da $O(|V|\cdot|E|)$.
+\end{block}
+\begin{block}{Lemma}
+Durante l'esecuzione dell'algoritmo, il numero totale di operazioni di \textbf{push} tali che l'arco viene \textbf{saturato} è limitato superiormente da $|V|\cdot|E|$.
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Algoritmi push-relabel\\Complessità}
+\begin{block}{Teorema}
+L'algoritmo relabel-to-front ha complessità $O(|V|^3)$.
+\end{block}
+\begin{block}{Dimostrazione}
+
+\end{block}
 \end{frame}
 
 \end{document}
