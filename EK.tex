@@ -152,9 +152,9 @@ Per poi arrivare al \textbf{Teorema del flusso massimo e taglio minimo} (permett
 \subsection{Rete residua}
 
 \begin{frame}
-\frametitle{L'algoritmo di Ford-Fulkerson\\Rete residua}
+\frametitle{Il metodo di Ford-Fulkerson\\Rete residua}
 Dati una rete $G$ e un flusso $f$, la rete residua $G_f=(V_f,E_f)$ permette di identificare i cammini lungo i quali è possibile aumentare il flusso.\\
-Ponendo $G=(V,E)$, $s$ sorgente e $t$ pozzo, Possiamo definire la \textbf{capacità residua} $c_f$ nel seguente modo:\\
+Ponendo $G=(V,E)$, $s$ sorgente e $t$ pozzo, possiamo definire la \textbf{capacità residua} $c_f$ nel seguente modo:\\
 $$c_f(u,v) =
 \left\{
 	\begin{array}{ll}
@@ -165,7 +165,7 @@ $$c_f(u,v) =
 \right.$$\\
 Il primo caso della definizione corrisponde alla ``capacità residua" degli archi presenti in $G$.\\
 Il secondo caso permette all'algoritmo di ``vedere" le quantità di flusso già assegnate agli archi, dando la possibilità di diminuire il flusso su un arco (assegnando al corrispondente arco in $G_f$ un flusso non nullo).\\
-In $G_f$ avrò gli stessi nodi presenti in $G$, mentre gli archi saranno tutti gli $(u,v)$ tali che $c_f(u,v)>0$.
+In $G_f$ avremo gli stessi nodi presenti in $G$, mentre gli archi saranno tutti gli $(u,v)$ tali che $c_f(u,v)>0$.
 \end{frame}
 
 \begin{frame}
@@ -212,7 +212,7 @@ $$f_p(u,v) =
 $f_p$ è un flusso in $G_f$ di valore $|f_p|=c_f(p)>0$.
 \end{block}
 \begin{block}{Corollario}
-$f\uparrow f_p$ è un flusso in $G$ di valore $|f\uparrow f'|=|f|+|f_p|>|f|.$
+$f\uparrow f_p$ è un flusso in $G$ di valore $|f\uparrow f_p|=|f|+|f_p|>|f|.$
 \end{block}
 \end{frame}
 
@@ -295,7 +295,7 @@ Le prime tre immagini mostrano il primo passo dell'algoritmo e la successiva sel
 \frametitle{L'algoritmo di Edmonds-Karp}
 L'algoritmo di Edmonds-Karp è un'implementazione del metodo di Ford-Fulkerson che ci permette di risolvere il problema del massimo flusso in tempo $O(|V|\cdot|E|^2)$. L'algoritmo utilizza una ricerca in ampiezza per trovare, ad ogni iterazione, il \textbf{cammino minimo} da $s$ a $t$ nella rete residua.
 \begin{block}{Lemma}
-Dato $G=(V,E)$ con $s$ sorgente e $t$ pozzo, per tutti i $v\in V\setminus\{s,t\}$ abbiamo che la lunghezza del cammino minimo $\delta_f(s,v)$ fra $s$ e $v$ nella rete residua $G_f$ aumenta monotonicamente durante l'esecuzione dell'algoritmo (in particolare, ad ogni aumento del flusso).
+Dato $G=(V,E)$ con $s$ sorgente e $t$ pozzo, per tutti i $v\in V\setminus\{s,t\}$ abbiamo che la lunghezza del cammino minimo $\delta_f(s,v)$ fra $s$ e $v$ nella rete residua $G_f$ aumenta monotonicamente durante l'esecuzione dell'algoritmo.
 \end{block}
 \end{frame}
 
@@ -356,7 +356,7 @@ Questo dimostra che da quando $(u,v)$ diventa critico al successivo momento in c
 \begin{frame}
 \frametitle{L'algoritmo di Edmonds-Karp}
 \begin{block}{Dimostrazione}
-I nodi intermedi di un cammino minimo da $s$ a $u$ non possono mai contenere $s$, $u$ o $t$. Quindi, la sua distanza (dopo ogni iterazione) sarà al massimo $|V|-2$.\\
+I nodi intermedi di un cammino minimo da $s$ a $u$ non possono mai contenere $s$, $u$ o $t$. Quindi, la distanza di $u$ (dopo ogni iterazione) sarà al più $|V|-2$.\\
 Dopo che $(u,v)$ è diventato critico per la prima volta, può ridiventarlo al più altre $(|V|-2)/2=|V|/2-1$ volte, per un totale di $|V|/2$ volte.\\
 Visto che il numero di archi che possono comparire in una rete residua è $O(|E|)$, il numero totale di archi critici durante l'esecuzione dell'algoritmo sarà $O(|V|\cdot|E|)$
 \end{block}
@@ -436,11 +436,11 @@ $u.e>0$ implica l'esistenza di almeno un nodo $v$ tale che $(v,u).f>0$,  quindi 
         \State \textbf{for} each vertex $v\in s.Adj$
         \State \ \ \ \ \ \ $(s,v).f=c(s,v)$
         \State \ \ \ \ \ \ $v.e=c(s,v)$
-        \State \ \ \ \ \ \ $s.e=s.e-c(s,v)$
+        %\State \ \ \ \ \ \ $s.e=s.e-c(s,v)$
     \end{algorithmic}
     \label{alg_1}
 \end{algorithm}
-La linea 10 serve ad impedire che l'algoritmo inizi a ciclare scegliendo $s$ come nodo dal quale effettuare operazioni di push.
+%La linea 10 serve ad impedire che l'algoritmo inizi a ciclare scegliendo $s$ come nodo dal quale effettuare operazioni di push.
 \end{frame}
 
 \begin{frame}
